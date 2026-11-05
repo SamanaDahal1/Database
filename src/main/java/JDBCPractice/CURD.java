@@ -75,8 +75,13 @@ public class CURD {
 
             statement.setInt(1,age);
             statement.setInt(2,rollnum);
-            statement.executeUpdate();
-            System.out.println("Successfully updated");
+            int result = statement.executeUpdate();
+            if(result>0){
+            System.out.println("Student updated successfully ");
+            }
+            else {
+                System.out.println("Student not found");
+            }
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -87,14 +92,16 @@ public class CURD {
             String read = "delete from students where rollnum=?";
             PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
             statement.setInt(1,rollnum);
-            statement.executeUpdate();
-            System.out.println("\nSuccessfully deleted");
+            int result = statement.executeUpdate();
+            if(result>0){
+            System.out.println("\nStudent deleted successfully ");
+            }
+            else {
+                System.out.println("Student Not found");
+            }
         }
         catch (SQLException e){
             e.printStackTrace();
         }
     }
-
-
-
 }
