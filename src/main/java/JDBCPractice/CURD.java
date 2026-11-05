@@ -17,6 +17,9 @@ public class CURD {
         curd.insert(2,"Georgie",23);
         System.out.println("\nAll Students: ");
         curd.read();
+        curd.update(20,1);
+        System.out.println("\nAll Students after update: ");
+        curd.read();
 
 
     }
@@ -55,12 +58,26 @@ public class CURD {
            PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
            ResultSet s = statement.executeQuery();
            while(s.next()){
-               System.out.print(s.getInt("rollnum")+"\n"+s.getString("name")+"\n"+s.getInt("age") );
+               System.out.println(s.getInt("rollnum")+" "+s.getString("name")+" "+s.getInt("age") );
            }
 
        } catch (SQLException e) {
            e.printStackTrace();
        }
+    }
+    void update(int age,int rollnum){
+        try {
+            String read = "update students set age=? where rollnum=?";
+            PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+
+            statement.setInt(1,age);
+            statement.setInt(2,rollnum);
+            statement.executeUpdate();
+            System.out.println("Successfully updated");
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
 
