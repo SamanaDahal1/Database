@@ -43,7 +43,7 @@ public class CURD {
     }
     void insert(int rollnum ,String name,int age ){
        try {
-           String insert = "insert into students if empty (rollnum,name,age)values (?,?,?)";
+           String insert = "insert into students (rollnum,name,age)values (?,?,?)";
            PreparedStatement statement = databaseConnection.connection.prepareStatement(insert);
            statement.setInt(1,rollnum);
            statement.setString(2,name);
