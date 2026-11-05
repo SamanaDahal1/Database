@@ -1,6 +1,5 @@
 package JDBCPractice;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,10 +26,9 @@ public class CURD {
 
     }
    void create() {
-
-        try{
-            String query = "create table if not exists students(rollnum int primary key, name varchar(50),age int )";
-            PreparedStatement statement = databaseConnection.connection.prepareStatement(query);
+       String query = "create table if not exists students(rollnum int primary key, name varchar(50),age int )";
+       try(PreparedStatement statement = databaseConnection.connection.prepareStatement(query);
+        ){
             statement.executeUpdate();
             System.out.println("Student table created successfully");
 
@@ -42,9 +40,9 @@ public class CURD {
 
     }
     void insert(int rollnum ,String name,int age ){
-       try {
-           String insert = "insert into students (rollnum,name,age)values (?,?,?)";
-           PreparedStatement statement = databaseConnection.connection.prepareStatement(insert);
+        String insert = "insert into students (rollnum,name,age)values (?,?,?)";
+        try(PreparedStatement statement = databaseConnection.connection.prepareStatement(insert);
+       ) {
            statement.setInt(1,rollnum);
            statement.setString(2,name);
            statement.setInt(3 ,age);
@@ -56,10 +54,11 @@ public class CURD {
        }
     }
     void read(){
-       try {
-           String read = "select * from students";
-           PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
-           ResultSet s = statement.executeQuery();
+        String read = "select * from students";
+       try(PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+           ResultSet s = statement.executeQuery();)
+       {
+
            while(s.next()){
                System.out.println(s.getInt("rollnum")+" "+s.getString("name")+" "+s.getInt("age") );
            }
@@ -69,10 +68,9 @@ public class CURD {
        }
     }
     void update(int age,int rollnum){
-        try {
-            String read = "update students set age=? where rollnum=?";
-            PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
-
+        String read = "update students set age=? where rollnum=?";
+        try(PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+        ) {
             statement.setInt(1,age);
             statement.setInt(2,rollnum);
             int result = statement.executeUpdate();
@@ -88,9 +86,9 @@ public class CURD {
         }
     }
     void delete(int rollnum){
-        try {
-            String read = "delete from students where rollnum=?";
-            PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+        String read = "delete from students where rollnum=?";
+        try (PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+        ){
             statement.setInt(1,rollnum);
             int result = statement.executeUpdate();
             if(result>0){
