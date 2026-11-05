@@ -20,6 +20,9 @@ public class CURD {
         curd.update(20,1);
         System.out.println("\nAll Students after update: ");
         curd.read();
+        curd.delete(1);
+        System.out.println("\nAll Students after deleting: ");
+        curd.read();
 
 
     }
@@ -74,6 +77,18 @@ public class CURD {
             statement.setInt(2,rollnum);
             statement.executeUpdate();
             System.out.println("Successfully updated");
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    void delete(int rollnum){
+        try {
+            String read = "delete from students where rollnum=?";
+            PreparedStatement statement = databaseConnection.connection.prepareStatement(read);
+            statement.setInt(1,rollnum);
+            statement.executeUpdate();
+            System.out.println("\nSuccessfully deleted");
         }
         catch (SQLException e){
             e.printStackTrace();
