@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
 
 public class EmployeeMapping {
     DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -60,17 +61,26 @@ public class EmployeeMapping {
 
     void insert(String name, String email, double salary) {
         String insertQuery = "insert into employee (name,email,salary) value(?,?,?)";
-        try (PreparedStatement preparedStatement = databaseConnection.connection.prepareStatement(insertQuery)) {
+        try (PreparedStatement preparedStatement = databaseConnection.connection.prepareStatement(insertQuery,Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
             preparedStatement.setDouble(3, salary);
             preparedStatement.executeUpdate();
-            System.out.println("Successfully Inserted");
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys();){
+                    if(resultSet.next()){
+                        int generateId = resultSet.getInt(1);
+                        System.out.println("Generated Employee ID: " + generateId);
+                    }
+                    System.out.println("Successfully Inserted");
 
-        } catch (SQLException e) {
+                }
+        }
+        catch (SQLException e) {
             System.out.println("(Inserting Table)Something went wrong");
         }
     }
+
+
 
     Employee findById(int id) {
         String findId = "Select * from employee where id =?";
