@@ -3,10 +3,12 @@ package EmployeeObjectMapping;
 import JDBCPractice.DatabaseConnection;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeMapping {
     DatabaseConnection databaseConnection = new DatabaseConnection();
+
     public static void main(String[] args) {
        EmployeeMapping employeeMapping = new EmployeeMapping();
        employeeMapping.databaseConnection.conn();
@@ -14,6 +16,16 @@ public class EmployeeMapping {
        employeeMapping.insert("Gimmy","gimmy@gmail.com",30000);
        employeeMapping.insert("Adam","adam@gmail.com",45000);
        employeeMapping.insert("Lucia","lucia@gmail.com",80000);
+       Employee employee =employeeMapping.findById(2);
+        if (employee != null) {
+            System.out.println("ID: " + employee.getId());
+            System.out.println("Name: " + employee.getName());
+            System.out.println("Email: " + employee.getEmail());
+            System.out.println("Salary: " + employee.getSalary());
+        } else {
+            System.out.println("Employee not found!");
+        }
+
 
     }
 
@@ -45,5 +57,25 @@ public class EmployeeMapping {
             System.out.println("(Inserting Table)Something went wrong");
         }
     }
+    Employee findById(int id) {
+        String findId = "Select * from employee where id =?";
+        try (PreparedStatement preparedStatement = databaseConnection.connection.prepareStatement(findId)) {
 
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(resultSet.next()) {
+                int ids= resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                double salary = resultSet.getDouble("salary");
+                Employee employee = new Employee(ids,name,email,salary);
+                return employee;
+            }
+        } catch (SQLException e) {
+              System.out.println("(Finding Detail by id) something went wrong");
+        }
+
+        return null;
+    }
 }
