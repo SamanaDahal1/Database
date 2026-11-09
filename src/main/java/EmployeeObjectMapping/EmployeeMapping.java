@@ -65,13 +65,16 @@ public class EmployeeMapping {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
             preparedStatement.setDouble(3, salary);
-            preparedStatement.executeUpdate();
-                try (ResultSet resultSet = preparedStatement.getGeneratedKeys();){
-                    if(resultSet.next()){
+            int result = preparedStatement.executeUpdate();
+            if (result > 0) {
+                System.out.println("Successfully Inserted");
+
+                try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                    if (resultSet.next()) {
                         int generateId = resultSet.getInt(1);
                         System.out.println("Generated Employee ID: " + generateId);
                     }
-                    System.out.println("Successfully Inserted");
+                }
 
                 }
         }
@@ -80,22 +83,21 @@ public class EmployeeMapping {
         }
     }
 
-
-
     Employee findById(int id) {
         String findId = "Select * from employee where id =?";
         try (PreparedStatement preparedStatement = databaseConnection.connection.prepareStatement(findId)) {
 
             preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                int ids = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                double salary = resultSet.getDouble("salary");
-                Employee employee = new Employee(ids, name, email, salary);
-                return employee;
+            try(  ResultSet resultSet = preparedStatement.executeQuery();){
+                if (resultSet.next()) {
+                    int ids = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("email");
+                    double salary = resultSet.getDouble("salary");
+                    Employee employee = new Employee(ids, name, email, salary);
+                    return employee;
+                }
             }
         } catch (SQLException e) {
             System.out.println("(Finding Detail by id) something went wrong");
@@ -106,24 +108,25 @@ public class EmployeeMapping {
 
     List<Employee> findAll() {
         String findId = "Select * from employee";
+        List<Employee> employeeList = new ArrayList<>();
+
         try (PreparedStatement preparedStatement = databaseConnection.connection.prepareStatement(findId)) {
-            List<Employee> employeeList = new ArrayList<>();
-            ResultSet resultSet = preparedStatement.executeQuery();
+            try( ResultSet resultSet = preparedStatement.executeQuery();) {
+                while(resultSet.next()) {
+                    int ids = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    String email = resultSet.getString("email");
+                    double salary = resultSet.getDouble("salary");
+                    Employee employee = new Employee(ids, name, email, salary);
+                    employeeList.add(employee);
 
-            while(resultSet.next()) {
-                int ids = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                String email = resultSet.getString("email");
-                double salary = resultSet.getDouble("salary");
-                Employee employee = new Employee(ids, name, email, salary);
-                employeeList.add(employee);
-
+                }
             }
             return employeeList;
         }
         catch (SQLException e){
             System.out.println("(Listing all Employee) Something went wrong");
         }
-        return null;
+        return employeeList;
     }
 }
