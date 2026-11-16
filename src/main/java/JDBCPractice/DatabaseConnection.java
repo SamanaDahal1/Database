@@ -27,15 +27,11 @@ public class DatabaseConnection {
                connection = DriverManager.getConnection(url, username, password);
                System.out.println("Database Connected Successfully");
            }
-
            catch (SQLException e) {
                e.printStackTrace();
            }
        } catch (IOException e) {
            throw new RuntimeException(e);
        }
-
-
    }
-
 }
