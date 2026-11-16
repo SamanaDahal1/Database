@@ -4,6 +4,7 @@ import JDBCPractice.DatabaseConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EmployeeSearchPractice {
@@ -14,16 +15,23 @@ public class EmployeeSearchPractice {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter name which you want to search: ");
         String name = scanner.nextLine();
-        Employee employee = employeeSearchPractice.unsafe(name);
-        System.out.println("---DETAIL---\n" +
-                "Id: " + employee.getId() +
-                "\nName: "+employee.getName()+
-                "\nEmail: "+employee.getEmail()+
-                "\nSalary: "+employee.getSalary());
-
+        ArrayList<Employee> employees= employeeSearchPractice.unsafe(name);
+        if(employees.isEmpty()){
+            System.out.println("No employees found");
+        }
+        else{
+            for(Employee employee : employees) {
+            System.out.println("---DETAIL---\n" +
+                    "Id: " + employee.getId() +
+                    "\nName: " + employee.getName() +
+                    "\nEmail: " + employee.getEmail() +
+                    "\nSalary: " + employee.getSalary());
+            }
+        }
     }
 
-    Employee unsafe(String name) {
+    ArrayList<Employee> unsafe(String name) {
+        ArrayList<Employee> employees = new ArrayList<>();
         String search = "select * from employee where name ='"+name+"'";
         try (Statement statement = databaseConnection.connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(search)) {
@@ -33,13 +41,13 @@ public class EmployeeSearchPractice {
                     String email = resultSet.getString("email");
                     double salary = resultSet.getDouble("salary");
                     Employee employee = new Employee(id, names, email, salary);
-                    return employee;
-
+                    employees.add(employee);
                 }
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return employees;
     }
 }
