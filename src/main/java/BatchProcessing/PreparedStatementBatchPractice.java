@@ -27,11 +27,22 @@ public class PreparedStatementBatchPractice {
         preparedStatement.setString(2,"Ethen");
         preparedStatement.setDouble(3,90000);
         preparedStatement.addBatch();
-        int[] result =preparedStatement.executeBatch();
-        for (int results: result){
-            System.out.println("Row Affected: "+ results);
+        try {
+            int[] result =preparedStatement.executeBatch();
+            for (int results: result){
+                System.out.println("Row Affected: "+ results);
+            }
+            databaseConnection.connection.commit();
         }
-        databaseConnection.connection.commit();
-        databaseConnection.connection.setAutoCommit(true);
+        catch (SQLException e){
+            databaseConnection.connection.rollback();
+            System.out.println("Something went wrong");
+            throw e;
+        }
+        finally {
+            databaseConnection.connection.setAutoCommit(true);
+        }
+
+
     }
 }
