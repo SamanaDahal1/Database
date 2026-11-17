@@ -3,7 +3,7 @@ import JDBCPractice.DatabaseConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+//3442millisecond
 public class IndividualInsertPractice {
     public static void main(String[] args) throws SQLException {
         DatabaseConnection databaseConnection =new DatabaseConnection();
