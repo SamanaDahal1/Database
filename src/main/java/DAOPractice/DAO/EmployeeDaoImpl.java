@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDao{
@@ -91,7 +92,27 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
     public List<Employee> searchByName(String name) {
-        return List.of();
+        String querySearchByName = "select * from employees where name  like ?";
+        List<Employee> employees = new ArrayList<>();
+        try(Connection connection = HikariCPConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(querySearchByName)){
+            preparedStatement.setString(1,"%"+name+"%");
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    employees.add(new Employee(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"),
+                            resultSet.getInt("department_id"),
+                            resultSet.getDouble("salary")));
+                }
+                return employees;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Something went Wrong: "+e.getMessage());
+        }
+        return employees;
     }
 
     @Override
