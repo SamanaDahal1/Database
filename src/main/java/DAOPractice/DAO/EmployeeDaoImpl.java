@@ -30,8 +30,22 @@ public class EmployeeDaoImpl implements EmployeeDao{
     }
     @Override
     public boolean updateEmployee(Employee employee) {
-//        String queryUpdate = "update employees set name = ? , "
-        return false;
+        String queryUpdate = "update employees set name = ?,email = ?,department_id=?,salary=? where id = ? ";
+        try (Connection connection = HikariCPConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(queryUpdate))
+        {
+            preparedStatement.setString(1, employee.getName());
+            preparedStatement.setString(2, employee.getEmail());
+            preparedStatement.setInt(3,employee.getDepartmentId());
+            preparedStatement.setDouble(4,employee.getSalary());
+            preparedStatement.setInt(5,employee.getId());
+            int result = preparedStatement.executeUpdate();
+            return result > 0;
+        }
+        catch (SQLException e){
+            System.out.println("Something went wrong during updating: "+e.getMessage());
+            return false;
+        }
     }
 
     @Override
