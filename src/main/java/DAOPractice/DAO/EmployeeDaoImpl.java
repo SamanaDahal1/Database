@@ -85,7 +85,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
            }
        }
        catch (SQLException e){
-           System.out.println("Something went wrong while finding employee detail by id");
+           System.out.println("Something went wrong while finding employee detail by id: "+e.getMessage());
        }
         return null;
     }
@@ -110,7 +110,7 @@ public class EmployeeDaoImpl implements EmployeeDao{
             }
         }
         catch (SQLException e){
-            System.out.println("Something went Wrong: "+e.getMessage());
+            System.out.println("Something went wrong while searching by name: "+e.getMessage());
         }
         return employees;
     }
@@ -136,13 +136,39 @@ public class EmployeeDaoImpl implements EmployeeDao{
             }
         }
         catch (SQLException e){
-            System.out.println("Something went wrong while Finding detail by department: "+ e.getMessage());
+            System.out.println("Something went wrong while finding detail by department: "+ e.getMessage());
         }
         return employees;
     }
 
     @Override
     public List<Employee> findAllPagination(int pageNum, int pageSize) {
-        return List.of();
+        String queryPagination = "Select * from employees order by id limit ? offset ?";
+        if(pageNum<=0 || pageSize<=0){
+            throw new IllegalArgumentException("Page Number and Page Size must be positive");
+        }
+        int offset = (pageNum-1)*pageSize;
+        List<Employee> employees = new ArrayList<>();
+        try(Connection connection = HikariCPConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(queryPagination))
+        {
+            preparedStatement.setInt(1,pageSize);
+            preparedStatement.setInt(2,offset);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    employees.add(new Employee(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"),
+                            resultSet.getInt("department_id"),
+                            resultSet.getDouble("salary")));
+                }
+                return employees;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Something went wrong while finding all detail (pagination): "+e.getMessage());
+        }
+        return employees;
     }
 }
