@@ -5,6 +5,7 @@ import DAOPractice.Model.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -66,6 +67,25 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
     public Employee findById(int id) {
+       String queryFindById = "select * from employees where id = ?";
+       try (Connection connection = HikariCPConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(queryFindById))
+       {
+           preparedStatement.setInt(1,id);
+           try(ResultSet resultSet = preparedStatement.executeQuery()){
+               if (resultSet.next()){
+               return new Employee(
+                       resultSet.getInt("id"),
+                       resultSet.getString("name"),
+                       resultSet.getString("email"),
+                       resultSet.getInt("department_id"),
+                       resultSet.getDouble("salary"));
+               }
+           }
+       }
+       catch (SQLException e){
+           System.out.println("Something went wrong while finding employee detail by id");
+       }
         return null;
     }
 

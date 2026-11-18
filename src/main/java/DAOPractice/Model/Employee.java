@@ -7,8 +7,8 @@ package DAOPractice.Model;
     private double salary;
 
 
-   public Employee(String name,String email,int departmentId,double salary){
-
+   public Employee(int id ,String name,String email,int departmentId,double salary){
+        this.id=id;
         this.name=name;
         this.email=email;
         this.departmentId=departmentId;
