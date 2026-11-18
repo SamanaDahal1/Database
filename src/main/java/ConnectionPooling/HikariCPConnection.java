@@ -3,6 +3,7 @@ package ConnectionPooling;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.util.Properties;
 
 public class HikariCPConnection {
     private static final HikariDataSource dataSource ;
+    private static final DataSource data;
     static {
         Properties properties = new Properties();
         try(InputStream inputStream = HikariCPConnection.class
@@ -28,6 +30,7 @@ public class HikariCPConnection {
             hikariConfig.setConnectionTimeout(3000);
             hikariConfig.setPoolName("HikariPool");
             dataSource=new HikariDataSource(hikariConfig);
+            data=dataSource;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -37,6 +40,10 @@ public class HikariCPConnection {
 
     public static Connection getConnection() throws SQLException{
         return dataSource.getConnection();
+    }
+
+    public static Connection getDataSourceConn() throws SQLException{
+        return data.getConnection();
     }
     public static void test(){
         try (Connection connection = getConnection()){
