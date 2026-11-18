@@ -144,9 +144,6 @@ public class EmployeeDaoImpl implements EmployeeDao{
     @Override
     public List<Employee> findAllPagination(int pageNum, int pageSize) {
         String queryPagination = "Select * from employees order by id limit ? offset ?";
-        if(pageNum<=0 || pageSize<=0){
-            throw new IllegalArgumentException("Page Number and Page Size must be positive");
-        }
         int offset = (pageNum-1)*pageSize;
         List<Employee> employees = new ArrayList<>();
         try(Connection connection = HikariCPConnection.getConnection();
