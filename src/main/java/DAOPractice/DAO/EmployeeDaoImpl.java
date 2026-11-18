@@ -50,7 +50,18 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
     public boolean deleteEmployee(int id) {
-        return false;
+        String queryDelete= "delete from employees where id = ?";
+        try (Connection connection = HikariCPConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(queryDelete))
+        {
+            preparedStatement.setInt(1,id);
+            int result = preparedStatement.executeUpdate();
+            return result>0;
+        }
+        catch (SQLException e){
+            System.out.println("Something went wrong during deleting: "+e.getMessage());
+            return false;
+        }
     }
 
     @Override
