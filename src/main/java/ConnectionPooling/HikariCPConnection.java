@@ -24,7 +24,8 @@ public class HikariCPConnection {
             hikariConfig.setJdbcUrl(properties.getProperty("db.url"));
             hikariConfig.setUsername(properties.getProperty("db.username"));
             hikariConfig.setPassword(properties.getProperty("db.password"));
-            hikariConfig.setMaximumPoolSize(20);
+            hikariConfig.setMaximumPoolSize(2);
+            hikariConfig.setConnectionTimeout(3000);
             hikariConfig.setPoolName("HikariPool");
             dataSource=new HikariDataSource(hikariConfig);
 
