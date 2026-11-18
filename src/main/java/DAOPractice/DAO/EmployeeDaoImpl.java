@@ -117,7 +117,28 @@ public class EmployeeDaoImpl implements EmployeeDao{
 
     @Override
     public List<Employee> findByDep(int departmentId) {
-        return List.of();
+        String queryFindByDep = "Select * from employees where department_id = ?";
+        List<Employee> employees = new ArrayList<>();
+        try(Connection connection = HikariCPConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(queryFindByDep))
+        {
+            preparedStatement.setInt(1,departmentId);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    employees.add(new Employee(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("email"),
+                            resultSet.getInt("department_id"),
+                            resultSet.getDouble("salary")));
+                }
+                return employees;
+            }
+        }
+        catch (SQLException e){
+            System.out.println("Something went wrong while Finding detail by department: "+ e.getMessage());
+        }
+        return employees;
     }
 
     @Override
