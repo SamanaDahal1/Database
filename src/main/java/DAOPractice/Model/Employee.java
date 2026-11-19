@@ -1,5 +1,8 @@
 package DAOPractice.Model;
- public class Employee {
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
+public class Employee {
     private int id;
     private String name;
     private String email;
@@ -13,6 +16,12 @@ package DAOPractice.Model;
         this.email=email;
         this.departmentId=departmentId;
         this.salary=salary;
+    }
+    public Employee(String name , String email,int departmentId,double salary){
+       this.name = name;
+       this.email= email;
+       this.departmentId=departmentId;
+       this.salary=salary;
     }
 
     public int getId() {
