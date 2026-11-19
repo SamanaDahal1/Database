@@ -12,7 +12,7 @@ public class EmployeeManager {
         EmployeeService employeeService = new EmployeeService(new EmployeeDaoImpl());
         Scanner src = new Scanner(System.in);
         while (true){
-            System.out.print("---Employee Management System---\n" +
+            System.out.print("\n---Employee Management System---\n" +
                 "1. Add Employee\n" +
                 "2. Update Employee\n" +
                 "3. Delete Employee\n" +
@@ -24,6 +24,7 @@ public class EmployeeManager {
                 "Enter your Choice: ");
             int choice = src.nextInt();
             if(choice==1){
+                System.out.println("\n---Add EMployee---");
                 System.out.print("Enter employee name: ");
                 String name = src.next();
                 System.out.print("Enter employee email: ");
@@ -41,6 +42,7 @@ public class EmployeeManager {
                 }
             }
             else if (choice==2) {
+                System.out.println("\n---Update Employee---");
                 System.out.print("Enter employee id: ");
                 int id = src.nextInt();
                 Employee exist =employeeService.findById(id);
@@ -66,6 +68,7 @@ public class EmployeeManager {
                 }
             }
             else if (choice==3) {
+                System.out.println("\n---Delete Employee---");
                 System.out.print("Enter Employee id: ");
                 int id = src.nextInt();
                 Employee employee = employeeService.findById(id);
@@ -83,6 +86,7 @@ public class EmployeeManager {
                 }
             }
             else if (choice==4) {
+                System.out.println("\n---Find Employee By Id---");
                 System.out.print("Enter Employee Id: ");
                 int id = src.nextInt();
                 Employee employee = employeeService.findById(id);
@@ -94,10 +98,11 @@ public class EmployeeManager {
                             "\nName: "+employee.getName()+
                             "\nEmail: "+employee.getEmail()+
                             "\nDepartment Id: "+employee.getDepartmentId()+
-                            "\nSalary: "+employee.getSalary());
+                            "\nSalary: "+employee.getSalary()+"\n");
                 }
             }
             else if (choice==5) {
+                System.out.println("\n---Employee Search By Name---");
                 System.out.print("Enter Employee Name: ");
                 String name = src.next();
                 List<Employee> employee = employeeService.searchByName(name);
@@ -110,11 +115,12 @@ public class EmployeeManager {
                                 "\nName: "+employee1.getName()+
                                 "\nEmail: "+employee1.getEmail()+
                                 "\nDepartment Id: "+employee1.getDepartmentId()+
-                                "\nSalary: "+employee1.getSalary());
+                                "\nSalary: "+employee1.getSalary()+"\n");
                     }
                 }
             }
             else if (choice==6) {
+                System.out.println("\n---Find Employees By Department ID---");
                 System.out.print("Enter Department Id: ");
                 int depId = src.nextInt();
                 List<Employee> employees = employeeService.findByDep(depId);
@@ -127,11 +133,12 @@ public class EmployeeManager {
                                 "\nName: "+employee1.getName()+
                                 "\nEmail: "+employee1.getEmail()+
                                 "\nDepartment Id: "+employee1.getDepartmentId()+
-                                "\nSalary: "+employee1.getSalary());
+                                "\nSalary: "+employee1.getSalary()+"\n");
                     }
                 }
             }
             else if (choice==7) {
+                System.out.println("\n---Find Employee(Pagination)---");
                 System.out.print("Enter Page Number: ");
                 int pageNum = src.nextInt();
                 System.out.print("Enter Page Size: ");
@@ -147,7 +154,7 @@ public class EmployeeManager {
                                 "\nName: "+employees.getName()+
                                 "\nEmail: "+employees.getEmail()+
                                 "\nDepartment Id: "+employees.getDepartmentId()+
-                                "\nSalary: "+employees.getSalary());
+                                "\nSalary: "+employees.getSalary()+"\n");
                     }
                 }
             }
