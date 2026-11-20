@@ -1,5 +1,4 @@
 package EmployeeSalaryAnalyzer;
-import DAOPractice.DAO.EmployeeDao;
 import DAOPractice.DAO.EmployeeDaoImpl;
 import DAOPractice.Model.Employee;
 import DAOPractice.Service.EmployeeService;
