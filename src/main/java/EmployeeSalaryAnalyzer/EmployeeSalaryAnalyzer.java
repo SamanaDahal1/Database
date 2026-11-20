@@ -3,6 +3,7 @@ package EmployeeSalaryAnalyzer;
 import DAOPractice.Model.Employee
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,11 @@ public class EmployeeSalaryAnalyzer {
                 .orElse(0.0);
     }
     Optional<Employee> findHighestPaidEmployee(List<Employee>employees){
-
+        if(employees==null||employees.isEmpty()){
+            return Optional.empty();
+        }
+        return employees.stream()
+                .max(Comparator.comparingDouble(Employee::getSalary));
     }
     List<Employee> sortEmployeesBYSalary(List<Employee> employees){
 
