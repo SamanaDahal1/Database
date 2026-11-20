@@ -1,14 +1,16 @@
 package EmployeeSalaryAnalyzer;
 
-import DAOPractice.Model.Employee
-
-import java.util.ArrayList;
+import DAOPractice.Model.Employee;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 public class EmployeeSalaryAnalyzer {
     void displayEmployees (List<Employee> employees){
+        if(employees==null||employees.isEmpty()){
+            System.out.println("List is Empty");
+            return;
+        }
         for(Employee employee: employees){
             System.out.println("Id: "+employee.getId()+
                     "\nName: "+employee.getName()+
@@ -34,6 +36,12 @@ public class EmployeeSalaryAnalyzer {
                 .max(Comparator.comparingDouble(Employee::getSalary));
     }
     List<Employee> sortEmployeesBYSalary(List<Employee> employees){
+        if(employees==null||employees.isEmpty()){
+            return employees;
+        }
+        return employees.stream()
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
+                .toList();
 
     }
 }
