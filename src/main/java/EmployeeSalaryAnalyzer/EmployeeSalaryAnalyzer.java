@@ -17,7 +17,13 @@ public class EmployeeSalaryAnalyzer {
         }
     }
     double calculateAverageSalary(List<Employee> employees){
-
+        if(employees==null||employees.isEmpty()){
+            return 0.0;
+        }
+        return employees.stream()
+                .mapToDouble(Employee::getSalary)
+                .average()
+                .orElse(0.0);
     }
     Optional<Employee> findHighestPaidEmployee(List<Employee>employees){
 
