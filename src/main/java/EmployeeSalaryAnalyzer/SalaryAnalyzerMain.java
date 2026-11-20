@@ -30,27 +30,46 @@ public class SalaryAnalyzerMain {
             System.out.println("Choose 0-5:");
             int choose = scanner.nextInt();
             if(choose==1){
+                System.out.println("\n--Display All Employee--");
                 salaryAnalyzer.displayEmployees(dep);
             }
             else if (choose==2){
+                System.out.println("\n--Calculate Average Salary--");
                double average = salaryAnalyzer.calculateAverageSalary(dep);
-               System.out.println("Average Salary of Department: "+average);
+               System.out.println("\nAverage Salary of Department: "+average);
             }
             else if (choose==3) {
+                System.out.println("\n--Find Highest Paid Employee--");
                Optional<Employee> highestPaid= salaryAnalyzer.findHighestPaidEmployee(dep);
-               highestPaid.ifPresentOrElse(System.out::println,()->System.out.println("Not found"));
+                highestPaid.ifPresentOrElse(
+                        employee -> System.out.println("Name: " + employee.getName() +
+                                        "\nSalary: " + employee.getSalary()
+                        ),
+                        () -> System.out.println("Not found")
+                );
             }
             else if (choose==4) {
+                System.out.println("\n--Sort From Highest to lowest--");
                 List<Employee> sorting=salaryAnalyzer.sortEmployeesBYSalary(dep);
                 salaryAnalyzer.displayEmployees(sorting);
             }
             else if (choose==5) {
                 System.out.println("--- Display Complete Salary Analysis---");
+                System.out.println("\n--Display All Employee--");
                 salaryAnalyzer.displayEmployees(dep);
+                System.out.println("\n--Calculate Average Salary--");
                 double average = salaryAnalyzer.calculateAverageSalary(dep);
+                System.out.println("\n--Calculate Average Salary--");
                 System.out.println("Average Salary of Department: "+average);
+                System.out.println("\n--Find Highest Paid Employee--");
                 Optional<Employee> highestPaid= salaryAnalyzer.findHighestPaidEmployee(dep);
-                highestPaid.ifPresentOrElse(System.out::println,()->System.out.println("Not found"));
+                highestPaid.ifPresentOrElse(
+                        employee -> System.out.println("Name: " + employee.getName() +
+                                "\nSalary: " + employee.getSalary()
+                        ),
+                        () -> System.out.println("Not found")
+                );
+                System.out.println("\n--Sort From Highest to lowest--");
                 List<Employee> sorting=salaryAnalyzer.sortEmployeesBYSalary(dep);
                 salaryAnalyzer.displayEmployees(sorting);
             }
