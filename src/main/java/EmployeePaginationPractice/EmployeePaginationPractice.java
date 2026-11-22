@@ -1,10 +1,12 @@
 package EmployeePaginationPractice;
 import ConnectionPooling.HikariCPConnection;
+import EmployeeObjectMapping.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class EmployeePaginationPractice {
     int getTotalEmployees() {
@@ -25,4 +27,15 @@ public class EmployeePaginationPractice {
         }
         return count;
     }
+
+    int getTotalPages(int pageSize){
+        if(pageSize>0){
+            int totalEmp = getTotalEmployees();
+            int totalPage = ((totalEmp +pageSize)-1)/pageSize;
+            return totalPage;
+
+        }
+        return 0;
+    }
+
 }
