@@ -1,6 +1,6 @@
 package EmployeePaginationPractice;
 import ConnectionPooling.HikariCPConnection;
-import EmployeeObjectMapping.Employee;
+import DAOPractice.Model.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,7 +45,7 @@ public class EmployeePaginationPractice {
             return employees;
         }
         int offset = (pageNumber - 1) * pageSize;
-        String query = "SELECT * FROM employee ORDER BY id ASC LIMIT ? OFFSET ?";
+        String query = "SELECT * FROM employees ORDER BY id ASC LIMIT ? OFFSET ?";
         try (Connection connection = HikariCPConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query))
         {
@@ -57,13 +57,12 @@ public class EmployeePaginationPractice {
                             resultSet.getInt("id"),
                             resultSet.getString("name"),
                             resultSet.getString("email"),
+                            resultSet.getInt("department_id"),
                             resultSet.getDouble("salary")
                     );
-
                     employees.add(employee);
                 }
             }
-
         } catch (SQLException e) {
             System.out.println("Something went wrong: " + e.getMessage());
         }
