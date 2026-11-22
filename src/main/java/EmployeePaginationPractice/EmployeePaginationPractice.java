@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class EmployeePaginationPractice {
     int getTotalEmployees() {
         int count = 0;
-        String query = "select count(*) from employee";
+        String query = "select count(*) from employees";
 
         try (Connection connection = HikariCPConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
